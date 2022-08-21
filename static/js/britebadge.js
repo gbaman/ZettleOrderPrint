@@ -41,7 +41,7 @@ function updatePrintQueueTable(printQueueData){
         if (print_queue_item.printed === true){
             bgcolour = "#c4fc9f";
         }
-        tableHTML = tableHTML + "<tr bgcolor='{5}' id='queue{0}' data-target='.queue{0}'> <td>{0}</td> <td> {1} </td> <td> {2} </td> <td> {3}</td>  <td> {4}</td></tr>".toString().format(print_queue_item.queue_id, print_queue_item.name, print_queue_item.order_id, print_queue_item.attendee_id, print_queue_item.printed, bgcolour);
+        tableHTML = tableHTML + "<tr bgcolor='{4}' id='queue{0}' data-target='.queue{0}'> <td>{0}</td> <td> {1} </td> <td> {2} </td> <td> {3}</td></tr>".toString().format(print_queue_item.queue_id, print_queue_item.name, print_queue_item.purchase_id, print_queue_item.printed, bgcolour);
 
     }
     $('#print_queue_tbody').html(tableHTML);

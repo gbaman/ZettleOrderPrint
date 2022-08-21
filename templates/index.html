@@ -1,29 +1,43 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>Britebadge</h1>
+<h1>Zettle Orders Printer</h1>
 <h3>{{ event_name }}</h3>
 
 <table>
     <tr bgcolor="#d3d3d3">
-        <th>First Name</th>
-        <th>Surname</th>
+        <th>Purchase ID</th>
+        <th>Amount</th>
         <th>Badges Printed</th>
-        <th>Print</th>
+        <th>Order contents</th>
+        <th>Variations</th>
+        <th>Reprint</th>
     </tr>
     
-    {% for attendee in attendees %}
-        {% if attendee.badges_printed %}
-            <tr bgcolor="#c4fc9f">
+    {% for purchase in orders %}
+        {% if purchase.badges_printed %}
+            <tr bgcolor="#c4fc9f" style="border-top-width: thick">
         {% else %}
-            <tr>
+            <tr style="border-top-width: thick">
         {% endif %}
-            <td>{{ attendee.first_name }}</td>
-            <td>{{ attendee.surname }}</td>
-            <td id="badges-printed-{{ attendee.attendee_id }}">{{ attendee.badges_printed | count }}</td>
-            <td><button id="print_buton" data-id="{{attendee.attendee_id}}" class="btn btn-info"
-                        onclick="printBadge({{attendee.attendee_id}})" value="val_1" name="but1">Print Badge
+            <td>{{ purchase.purchase_id }}</td>
+            <td>£{{ purchase.cost }}</td>
+            <td id="badges-printed-{{ purchase.purchase_id }}">{{ purchase.badges_printed | count }}</td>
+            <td></td>
+            <td></td>
+            <td><button id="print_buton" data-id="{{purchase.purchase_id}}" class="btn btn-info"
+                        onclick="printBadge({{purchase.purchase_id}})" value="val_1" name="but1">Print Badge
                 </button></td>
+            {% for product in purchase.products_purchased %}
+                </tr>
+                <tr>
+                <td></td>
+                <td>£{{ product.cost }}</td>
+                <td></td>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.clean_product_variations }}</td>
+            {% endfor %}
+
         </tr>
     {% endfor %}
 </table>

@@ -16,9 +16,10 @@ def setup_db_connection():
     return db_session
 
 
-def get_current_attendees(db_session, event_id) -> List[Attendee]:
-    attendees = db_session.query(Attendee).filter(Attendee.event_id == int(event_id)).all()
-    return sorted(attendees, key=lambda x: x.surname, reverse=False)
+def get_current_purchases(db_session) -> List[Purchase]:
+    purchases = db_session.query(Purchase).filter().all()
+    #return sorted(purchases, key=lambda x: x., reverse=False)
+    return purchases
 
 
 def get_last_check_time(db_session):
@@ -37,23 +38,22 @@ def get_last_check_time(db_session):
         return datetime.datetime.now(pytz.utc) - datetime.timedelta(days=360)
 
 
-def compare_attendees(db_session, current_attendees: List[Attendee], new_attendees: List[Attendee]):
-    for new_attendee in new_attendees:
-        for current_attendee in current_attendees:
-            if new_attendee.attendee_id == current_attendee.attendee_id:
-                if current_attendee.status != new_attendee.status:
-                    print("Updated {} from {} to {}".format(current_attendee.first_name, current_attendee.status, new_attendee.status))
-                    current_attendee.status = new_attendee.status
+def compare_purchases(db_session, current_purchases: List[Purchase], new_purchases: List[Purchase]):
+    for new_purchase in new_purchases:
+        for current_purchase in current_purchases:
+            if new_purchase.purchase_uuid == current_purchase.purchase_uuid:
+                break
+                print("Updated {} from {} to {}".format(current_purchase.first_name, current_purchase.status, new_purchase.status))
+                current_purchase.status = new_purchase.status
+                print("Printing label")
+                db_session.add(PrintQueue(name="", purchase_id=new_purchase.purchase_id, printed=False))
 
-                    if new_attendee.status == "Checked In":
-                        print("Printing label for {} {}".format(new_attendee.first_name, new_attendee.surname))
-                        db_session.add(PrintQueue(name="{} {}".format(new_attendee.first_name, new_attendee.surname), order_id=current_attendee.order_id, attendee_id=new_attendee.attendee_id, printed=False))
-
-                        db_session.commit()
+                db_session.commit()
 
                 break
         else:
-            db_session.add(new_attendee)
+            db_session.add(new_purchase)
+            badge.create_label_image(new_purchase)
     db_session.commit()
 
 
@@ -77,7 +77,8 @@ def clear_print_queue(db_session):
     db_session.commit()
 
 
-def add_to_print_queue(db_session, attendee_id):
-    attendee = db_session.query(Attendee).filter(Attendee.attendee_id == int(attendee_id)).first()
-    db_session.add(PrintQueue(name="{} {}".format(attendee.first_name, attendee.surname), order_id=attendee.order_id, attendee_id=attendee.attendee_id, printed=False))
+def add_to_print_queue(db_session, puchase_id):
+    purchase = db_session.query(Purchase).filter(Purchase.purchase_id == int(puchase_id)).first()
+    #db_session.add()
+    db_session.add(PrintQueue(name="Bob", purchase=purchase, printed=False))
     db_session.commit()
