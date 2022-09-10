@@ -33,7 +33,9 @@ def get_transactions(start_datetime, end_datetime):
 
 def get_purchases(changed_since: datetime.datetime):
     #return []
-    url = f"https://purchase.izettle.com/purchases/v2?startDate={changed_since.isoformat()}"
+    url = f"https://purchase.izettle.com/purchases/v2?startDate={changed_since.strftime('%Y-%m-%dT%H:%M:%SZ')}"
+    #url = f"https://purchase.izettle.com/purchases/v2?startDate=2022-08-24T14:15:22Z"
+    #url = f"https://purchase.izettle.com/purchases/v2?startDate=2022-25-08T06:36:02Z"
     url = f"https://purchase.izettle.com/purchases/v2"
     response = requests.get(url, headers=headers)
     data = response.json()
@@ -51,6 +53,8 @@ def get_purchases(changed_since: datetime.datetime):
                 new_product.details = ""
             if 'variantName' in raw_product:
                 new_product.product_variations = raw_product['variantName']
+            if "comment" in raw_product:
+                new_product.comment = raw_product['comment']
             products.append(new_product)
         purchase = Purchase(purchase_uuid=raw_purchase['purchaseUUID'], amount=raw_purchase['amount'], products_purchased=products)
         purchases.append(purchase)

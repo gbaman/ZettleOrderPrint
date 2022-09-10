@@ -34,6 +34,7 @@ class ProductPurchased(Base):
     details = Column(String(150), nullable=True)
     product_name = Column(String(50), nullable=False)
     product_variations = Column(String(50), nullable=True)
+    comment = Column(String(50), nullable=True)
     purchase_id = Column(ForeignKey('purchase.purchase_id'), nullable=False)
     purchase = relationship("Purchase")
 
