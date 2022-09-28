@@ -12,6 +12,7 @@
         <th>Order contents</th>
         <th>Variations</th>
         <th>Reprint</th>
+        <th>Delivered</th>
     </tr>
     
     {% for purchase in orders %}
@@ -36,6 +37,10 @@
                 <td></td>
                 <td>{{ product.product_name }}</td>
                 <td>{{ product.clean_product_variations }}</td>
+                <td></td>
+                <td><button id="complete_button-{{product.product_purchase_id}}" data-id="{{product.product_purchase_id}}" class="btn {% if product.complete %} btn-danger {% else %}btn-info {% endif %}"
+                        onclick="completeOrder({{product.product_purchase_id}})" value="val_1" name="but1">{% if product.complete %} Undo order done {% else %}Mark delivered {% endif %}
+                </button></td>
             {% endfor %}
 
         </tr>

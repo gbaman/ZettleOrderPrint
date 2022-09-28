@@ -53,6 +53,7 @@ def compare_purchases(db_session, current_purchases: List[Purchase], new_purchas
                 break
         else:
             db_session.add(new_purchase)
+            db_session.commit()
             badge.create_label_image(new_purchase)
     db_session.commit()
 
@@ -82,3 +83,10 @@ def add_to_print_queue(db_session, puchase_id):
     #db_session.add()
     db_session.add(PrintQueue(name="Bob", purchase=purchase, printed=False))
     db_session.commit()
+
+
+def mark_purchase_complete(db_session, product_purchase_id):
+    product_purchased = db_session.query(ProductPurchased).filter(ProductPurchased.product_purchase_id == int(product_purchase_id)).first()
+    if product_purchased:
+        product_purchased.complete = True
+        db_session.commit()

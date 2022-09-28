@@ -66,3 +66,23 @@ function printBadge(attendee_id) {
         }
     });
 }
+
+function completeOrder(attendee_id) {
+    $.ajax({
+        type: "POST",
+        url: "/complete_order",
+        data: {
+            attendee_id: attendee_id,
+        },
+        success: function (result) {
+            var loc = $("#complete_button-" + attendee_id);
+            loc.text("Undo order done")
+            loc.removeClass("btn-info")
+            loc.addClass("btn-danger")
+        },
+        error: function (result) {
+            alert(result.toString())
+
+        }
+    });
+}

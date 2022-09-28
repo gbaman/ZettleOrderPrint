@@ -20,7 +20,8 @@ def create_label_image(purchase: models.Purchase):
         main_font = ImageFont.truetype("arial.ttf", 40)
         d.text((10, 10), "Grant's Pizza", fill="black", font=ImageFont.truetype("arial.ttf", 80, ))
         d.text((10, 120), f"Time: {datetime.datetime.now().strftime('%H:%M:%S')}", fill="black", font=main_font)
-        d.text((10, 170), f"Order ID: {purchase.purchase_id}", fill="black", font=main_font)
+        d.text((10, 170), f"Order Number: {purchase.purchase_id}", fill="black", font=main_font)
+        d.text((510, 100), f"{purchase.purchase_id}", fill="black", font=ImageFont.truetype("arial.ttf", 100, ))
         d.line((0, 230, img.size[0], 230), fill="black", width=7)
         for product_id, product in enumerate(purchase.products_purchased):
             if outer_prodict_id == product_id:

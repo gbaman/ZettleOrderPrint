@@ -112,6 +112,13 @@ def add_badge_to_queue():
     return ""
 
 
+@app.route("/complete_order", methods=['GET', 'POST'])
+def complete_order():
+    product_purchase_id = request.form["attendee_id"]
+    database.mark_purchase_complete(flask_db_session, product_purchase_id)
+    return ""
+
+
 @app.route("/clear_print_queue")
 def clear_print_queue():
     database.clear_print_queue(flask_db_session)
