@@ -39,6 +39,7 @@ def get_last_check_time(db_session):
 
 
 def compare_purchases(db_session, current_purchases: List[Purchase], new_purchases: List[Purchase]):
+    to_be_printed = []
     for new_purchase in new_purchases:
         for current_purchase in current_purchases:
             if new_purchase.purchase_uuid == current_purchase.purchase_uuid:
@@ -54,8 +55,10 @@ def compare_purchases(db_session, current_purchases: List[Purchase], new_purchas
         else:
             db_session.add(new_purchase)
             db_session.commit()
-            badge.create_label_image(new_purchase)
+            to_be_printed.append(new_purchase.purchase_id)
     db_session.commit()
+    for purchase in db_session.query(Purchase).filter(Purchase.purchase_id.in_(to_be_printed)).all():
+        badge.create_label_image(purchase)
 
 
 def get_next_print_queue_item(db_session) -> PrintQueue:

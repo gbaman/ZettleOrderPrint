@@ -43,19 +43,20 @@ def get_purchases(changed_since: datetime.datetime):
     for raw_purchase in data["purchases"]:
         products = []
         for raw_product in raw_purchase["products"]:
-            new_product = ProductPurchased(product_uuid="-1", product_name="", unit_price=raw_product['unitPrice'], details="")
-            if "name" in raw_product:
-                new_product.product_name = raw_product["name"]
-            if 'productUuid' in raw_product:
-                new_product.product_uuid = raw_product['productUuid']
-            if "details" in raw_product:
-                new_product.details = raw_product["details"]
-                new_product.details = ""
-            if 'variantName' in raw_product:
-                new_product.product_variations = raw_product['variantName']
-            if "comment" in raw_product:
-                new_product.comment = raw_product['comment']
-            products.append(new_product)
+            for count in range(int(raw_product["quantity"])):
+                new_product = ProductPurchased(product_uuid="-1", product_name="", unit_price=raw_product['unitPrice'], details="", complete=False)
+                if "name" in raw_product:
+                    new_product.product_name = raw_product["name"]
+                if 'productUuid' in raw_product:
+                    new_product.product_uuid = raw_product['productUuid']
+                if "details" in raw_product:
+                    new_product.details = raw_product["details"]
+                    new_product.details = ""
+                if 'variantName' in raw_product:
+                    new_product.product_variations = raw_product['variantName']
+                if "comment" in raw_product:
+                    new_product.comment = raw_product['comment']
+                products.append(new_product)
         purchase = Purchase(purchase_uuid=raw_purchase['purchaseUUID'], amount=raw_purchase['amount'], products_purchased=products)
         purchases.append(purchase)
     return purchases
