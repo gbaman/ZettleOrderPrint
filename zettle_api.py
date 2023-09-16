@@ -37,6 +37,7 @@ def get_purchases(changed_since: datetime.datetime):
     #url = f"https://purchase.izettle.com/purchases/v2?startDate=2022-08-24T14:15:22Z"
     #url = f"https://purchase.izettle.com/purchases/v2?startDate=2022-25-08T06:36:02Z"
     url = f"https://purchase.izettle.com/purchases/v2"
+    url = f"https://purchase.izettle.com/purchases/v2?startDate={changed_since.strftime('%Y-%m-%dT%H:%M:%SZ')}"
     response = requests.get(url, headers=headers)
     data = response.json()
     purchases = []

@@ -35,7 +35,7 @@ def get_last_check_time(db_session):
         t = Configuration(config_key="last_checked_time", config_value=current_time.strftime(f))
         db_session.add(t)
         db_session.commit()
-        return datetime.datetime.now(pytz.utc) - datetime.timedelta(days=360)
+        return datetime.datetime.now(pytz.utc) - datetime.timedelta(days=180)
 
 
 def compare_purchases(db_session, current_purchases: List[Purchase], new_purchases: List[Purchase]):
